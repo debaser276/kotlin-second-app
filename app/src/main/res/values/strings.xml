@@ -2,7 +2,14 @@
     <string name="app_name">Second App</string>
     <string name="login">Login</string>
     <string name="registration">Registration</string>
-    <string name="authentication_please_wait">Authentication. Please wait</string>
+    <string name="authentication">Authentication</string>
+    <string name="please_wait">Please wait...</string>
     <string name="enter_login">Enter login</string>
     <string name="enter_password">Enter password</string>
+    <string name="success">Success</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="passwords_not_match">Passwords do not match</string>
+    <string name="password_incorrect">Password is incorrect</string>
 </resources>
