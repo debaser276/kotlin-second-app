@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         } else {
             btn_login.setOnClickListener {
                 if (!isValid(edt_password.text.toString())) {
-                    edt_password.error = "Password is incorrect"
+                    edt_password.error = resources.getString(R.string.password_incorrect)
                 } else {
                     launch {
                         dialog = LoadingDialog(
