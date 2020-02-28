@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.edit
 import kotlinx.android.synthetic.main.activity_registration.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -29,8 +30,7 @@ class RegistrationActivity : AppCompatActivity(), CoroutineScope by MainScope() 
             } else {
                 launch {
                     dialog = LoadingDialog(
-                        this@RegistrationActivity,
-                        resources.getString(R.string.registration)).apply { show() }
+                        this@RegistrationActivity).apply { show() }
                     val response = Repository.register(
                         edt_login.text.toString(),
                         edt_password.text.toString())
@@ -49,10 +49,9 @@ class RegistrationActivity : AppCompatActivity(), CoroutineScope by MainScope() 
     }
 
     private fun setUsrAuth(token: String) =
-        getSharedPreferences(API_SHARED_file, Context.MODE_PRIVATE)
-            .edit()
-            .putString(AUTHENTICATED_SHARED_KEY, token)
-            .apply()
+        getSharedPreferences(API_SHARED_file, Context.MODE_PRIVATE).edit {
+            putString(AUTHENTICATED_SHARED_KEY, token)
+        }
 
     override fun onStop() {
         super.onStop()

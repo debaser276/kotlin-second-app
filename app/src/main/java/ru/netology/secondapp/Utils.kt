@@ -4,8 +4,11 @@ import android.content.Context
 import android.widget.Toast
 import java.util.regex.Pattern
 
-fun isValid(password: String) = Pattern
-    .compile("(?=.*[A-Z])[a-zA-Z0-9]{6,}")
+private val pattern by lazy(LazyThreadSafetyMode.NONE) {
+    Pattern.compile("(?=.*[A-Z])[a-zA-Z0-9]{6,}")
+}
+
+fun isValid(password: String) = pattern
     .matcher(password)
     .matches()
 
