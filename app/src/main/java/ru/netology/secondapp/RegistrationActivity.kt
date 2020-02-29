@@ -29,8 +29,10 @@ class RegistrationActivity : AppCompatActivity(), CoroutineScope by MainScope() 
                 edt_password.error = resources.getString(R.string.password_incorrect)
             } else {
                 launch {
-                    dialog = LoadingDialog(
-                        this@RegistrationActivity).apply { show() }
+                    dialog = LoadingDialog(this@RegistrationActivity).apply {
+                        setTitle(R.string.registration)
+                        show()
+                    }
                     val response = Repository.register(
                         edt_login.text.toString(),
                         edt_password.text.toString())

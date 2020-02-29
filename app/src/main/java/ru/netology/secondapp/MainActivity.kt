@@ -29,8 +29,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                     edt_password.error = resources.getString(R.string.password_incorrect)
                 } else {
                     launch {
-                        dialog = LoadingDialog(
-                            this@MainActivity).apply { show() }
+                        dialog = LoadingDialog(this@MainActivity).apply {
+                            setTitle(getString(R.string.authentication))
+                            show()
+                        }
                         val response = Repository.authenticate(
                             edt_login.text.toString(),
                             edt_password.text.toString())
