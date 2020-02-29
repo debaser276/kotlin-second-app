@@ -1,10 +1,8 @@
 package ru.netology.firstapp.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.post_item_view.view.*
 import ru.netology.secondapp.*
@@ -27,20 +25,15 @@ open class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHo
                     }
                 }
             }
-            commentsIv.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val post = adapter.list[adapterPosition]
-                    post.comments++
-                    if (!post.commentedByAuthor) post.commentedByAuthor = !post.commentedByAuthor
-                    adapter.notifyItemChanged(adapterPosition)
-                }
+            repostsIv.setOnClickListener {
+
             }
 
             sharesIv.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val post = adapter.list[adapterPosition]
                     post.shares++
-                    if (!post.sharedByAuthor) post.sharedByAuthor = !post.sharedByAuthor
+                    if (!post.sharedByMe) post.sharedByMe = !post.sharedByMe
                     adapter.notifyItemChanged(adapterPosition)
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
@@ -80,9 +73,9 @@ open class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHo
                 else -> likesTv.text = "999+"
             }
             when {
-                post.comments <= 0 -> commentsTv.visibility = View.GONE
-                post.comments in 1..999 -> commentsTv.text = post.comments.toString()
-                else -> commentsTv.text = "999+"
+                post.reposts <= 0 -> repostsTv.visibility = View.GONE
+                post.reposts in 1..999 -> repostsTv.text = post.reposts.toString()
+                else -> repostsTv.text = "999+"
             }
             when {
                 post.shares <= 0 -> sharesTv.visibility = View.GONE
@@ -104,11 +97,11 @@ open class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHo
                     likesIv.setImageResource(R.drawable.ic_likes_gray_24dp)
                 }
             }
-            if (post.commentedByAuthor) {
-                commentsTv.setTextColor(Color.RED)
-                commentsIv.setImageResource(R.drawable.ic_comments_red_24dp)
+            if (post.repostedByMe) {
+                repostsTv.setTextColor(Color.RED)
+                repostsIv.setImageResource(R.drawable.ic_repost_red_24dp)
             }
-            if (post.sharedByAuthor) {
+            if (post.sharedByMe) {
                 sharesTv.setTextColor(Color.RED)
                 sharesIv.setImageResource(R.drawable.ic_shares_red_24dp)
             }
