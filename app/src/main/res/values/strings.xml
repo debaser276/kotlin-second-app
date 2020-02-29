@@ -18,4 +18,6 @@
     <string name="creating_new_post">Creating new post</string>
     <string name="post_created_successfully">Post created successfully</string>
     <string name="error_occured">Error occured</string>
+    <string name="getting_posts">Getting posts</string>
+    <string name="like_in_progress">Like in progress</string>
 </resources>

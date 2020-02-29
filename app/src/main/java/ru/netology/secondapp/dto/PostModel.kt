@@ -1,5 +1,7 @@
 package ru.netology.secondapp.dto
 
+import java.lang.IllegalStateException
+
 enum class MediaType {
     IMAGE
 }
@@ -26,7 +28,7 @@ data class PostModel (
     val media: String? = null,
     val mediaType: MediaType? = null,
     var likes: Int = 0,
-    val likedSet: MutableSet<Int> = mutableSetOf(),
+    var likedSet: MutableSet<Int> = mutableSetOf(),
     var comments: Int = 0,
     var shares: Int = 0,
     var views: Int = 0,
@@ -34,4 +36,12 @@ data class PostModel (
     var commentedByAuthor: Boolean = false,
     var sharedByAuthor: Boolean = false,
     val type: PostType = PostType.POST
-)
+) {
+    var likeActionPerforming = false
+
+    fun updateLikes(updateModel: PostModel) {
+        if (id != updateModel.id) throw IllegalStateException()
+        likes = updateModel.likes
+        likedSet = updateModel.likedSet
+    }
+}

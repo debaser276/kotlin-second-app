@@ -45,4 +45,10 @@ object Repository {
     suspend fun createPost(content: String) = API.createPost(
         CreatePostRequest(content = content)
     )
+
+    suspend fun getPosts() = API.getPosts()
+
+    suspend fun like(id: Int) = API.like(id)
+
+    suspend fun dislike(id: Int) = API.dislike(id)
 }
