@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         setContentView(R.layout.activity_main)
 
         if (isAuthenticated()) {
+            val token = getSharedPreferences(API_SHARED_file, Context.MODE_PRIVATE).getString(
+                AUTHENTICATED_SHARED_KEY, "")
+            Repository.createRetrofitWithAuthToken(token!!)
             val feedActivityIntent = Intent(this@MainActivity, FeedActivity::class.java)
             startActivity(feedActivityIntent)
             finish()
