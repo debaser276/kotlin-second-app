@@ -1,19 +1,20 @@
 package ru.netology.secondapp
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import ru.netology.firstapp.adapter.PostAdapter
+import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
 
 class FeedActivity : AppCompatActivity(), CoroutineScope by MainScope(),
-    PostAdapter.OnLikeBtnClickListener {
+    PostAdapter.OnLikeBtnClickListener, PostAdapter.OnRepostBtnClickListener {
 
     var dialog: LoadingDialog? = null
 
@@ -40,6 +41,7 @@ class FeedActivity : AppCompatActivity(), CoroutineScope by MainScope(),
                     layoutManager = LinearLayoutManager(this@FeedActivity)
                     adapter = PostAdapter(result.body() ?: mutableListOf()).apply {
                         likeBtnClickListener = this@FeedActivity
+                        repostBtnClickListener = this@FeedActivity
                     }
                 }
             } else {
@@ -63,6 +65,18 @@ class FeedActivity : AppCompatActivity(), CoroutineScope by MainScope(),
                     item.updateLikes(response.body()!!)
                 }
                 adapter?.notifyItemChanged(position)
+            }
+        }
+    }
+
+    override fun onRepostBtnClicked(item: PostModel, position: Int) {
+        val dialog = AlertDialog.Builder(this@FeedActivity)
+            .setView(R.layout.activity_create_post)
+            .show()
+        dialog.createPostBtn.setOnClickListener {
+            launch {
+                Repository.repost(item.id, dialog.contentEdt.text.toString())
+                dialog.dismiss()
             }
         }
     }

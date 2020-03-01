@@ -9,7 +9,7 @@ enum class MediaType {
 data class MediaModel(val id: String, val url: String, val type: MediaType)
 
 enum class PostType {
-    POST, REPOST, VIDEO, EVENT, AD
+    POST, VIDEO, EVENT, AD, REPOST
 }
 
 class Location(val lat: Double, val lng: Double)
@@ -18,6 +18,7 @@ infix fun Double.x(that: Double) = Location(this, that)
 
 data class PostModel (
     val id: Int,
+    val authorId: Int,
     val author: String,
     val created: Long,
     val content: String?,
@@ -30,17 +31,20 @@ data class PostModel (
     var likes: Int = 0,
     var likedSet: MutableSet<Int> = mutableSetOf(),
     var reposts: Int = 0,
-    var repostedByMe: Boolean = false,
+    var repostedSet: MutableSet<Int> = mutableSetOf(),
     var shares: Int = 0,
     var sharedByMe: Boolean = false,
     var views: Int = 0,
     val type: PostType = PostType.POST
 ) {
     var likeActionPerforming = false
+    var repostActionPerforming = false
 
     fun updateLikes(updateModel: PostModel) {
         if (id != updateModel.id) throw IllegalStateException()
         likes = updateModel.likes
         likedSet = updateModel.likedSet
+        reposts = updateModel.reposts
+        repostedSet = updateModel.repostedSet
     }
 }

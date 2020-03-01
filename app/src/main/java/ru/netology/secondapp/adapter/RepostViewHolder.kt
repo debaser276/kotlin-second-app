@@ -1,17 +1,16 @@
-package ru.netology.firstapp.adapter
+package ru.netology.secondapp.adapter
 
-import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.post_item_view.view.*
-import ru.netology.secondapp.*
-import ru.netology.secondapp.adapter.PostAdapter
+import ru.netology.secondapp.R
+import ru.netology.secondapp.TimeConverter
 import ru.netology.secondapp.dto.PostModel
-import java.text.SimpleDateFormat
-import java.util.*
+import ru.netology.secondapp.getUserId
+import ru.netology.secondapp.toast
 
-class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(view) {
+open class RepostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(view) {
 
     init {
         with(itemView) {
@@ -24,13 +23,6 @@ class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(
                     } else {
                         adapter.likeBtnClickListener?.onLikeBtnClicked(item, currentPosition)
                     }
-                }
-            }
-            repostsIv.setOnClickListener {
-                val currentPosition = adapterPosition
-                if (currentPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[currentPosition]
-                    adapter.repostBtnClickListener?.onRepostBtnClicked(item, currentPosition)
                 }
             }
         }
@@ -52,11 +44,6 @@ class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(
                 }
                 else -> likesTv.text = "999+"
             }
-            when {
-                post.reposts <= 0 -> repostsTv.visibility = View.GONE
-                post.reposts in 1..999 -> repostsTv.text = post.reposts.toString()
-                else -> repostsTv.text = "999+"
-            }
 
             when {
                 post.likeActionPerforming -> {
@@ -71,10 +58,6 @@ class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(
                     likesTv.setTextColor(Color.GRAY)
                     likesIv.setImageResource(R.drawable.ic_likes_inactive_24dp)
                 }
-            }
-            if (post.repostedSet.contains(context.getUserId())) {
-                repostsTv.setTextColor(Color.RED)
-                repostsIv.setImageResource(R.drawable.ic_repost_active_24dp)
             }
         }
     }

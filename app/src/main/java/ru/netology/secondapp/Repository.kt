@@ -4,10 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.netology.secondapp.api.API
-import ru.netology.secondapp.api.AuthRequestParams
-import ru.netology.secondapp.api.CreatePostRequest
-import ru.netology.secondapp.api.RegistrationRequestParams
+import ru.netology.secondapp.api.*
 import ru.netology.secondapp.api.interceptor.InjectAuthTokenInterceptor
 
 object Repository {
@@ -51,4 +48,6 @@ object Repository {
     suspend fun like(id: Int) = API.like(id)
 
     suspend fun dislike(id: Int) = API.dislike(id)
+
+    suspend fun repost(id: Int, content: String) = API.repost(id, CreateRepostRequest(content = content))
 }

@@ -13,6 +13,8 @@ data class RegistrationRequestParams(val username: String, val password: String)
 
 data class CreatePostRequest(val content: String, val type: PostType = PostType.POST)
 
+data class CreateRepostRequest(val content: String, val type: PostType = PostType.REPOST)
+
 interface API {
 
     @POST("api/v1/authentication")
@@ -33,4 +35,10 @@ interface API {
 
     @PUT("api/v1/posts/{id}/dislike")
     suspend fun dislike(@Path("id") id: Int): Response<PostModel>
+
+    @POST("api/v1/posts/{id}/repost")
+    suspend fun repost(
+        @Path("id") id: Int,
+        @Body createRepostRequest: CreateRepostRequest
+    ): Response<PostModel>
 }
