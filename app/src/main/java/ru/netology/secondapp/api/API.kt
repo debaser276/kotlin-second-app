@@ -30,6 +30,15 @@ interface API {
     @GET("api/v1/posts")
     suspend fun getPosts(): Response<MutableList<PostModel>>
 
+    @GET("api/v1/posts/recent")
+    suspend fun getRecentPosts(): Response<MutableList<PostModel>>
+
+    @GET("/api/v1/posts/{id}/before")
+    suspend fun getPostsBefore(@Path("id") id: Int): Response<List<PostModel>>
+
+    @GET("/api/v1/posts/{id}/after")
+    suspend fun getPostsAfter(@Path("id") id: Int): Response<List<PostModel>>
+
     @PUT("api/v1/posts/{id}/like")
     suspend fun like(@Path("id") id: Int): Response<PostModel>
 

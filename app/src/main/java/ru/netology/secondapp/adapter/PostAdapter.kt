@@ -1,12 +1,12 @@
 package ru.netology.secondapp.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.firstapp.adapter.PostViewHolder
 import ru.netology.secondapp.R
 import ru.netology.secondapp.dto.PostModel
-import ru.netology.secondapp.dto.PostType
 
 class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -17,6 +17,8 @@ class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<Recycl
 
     var likeBtnClickListener: OnLikeBtnClickListener? = null
     var repostBtnClickListener: OnRepostBtnClickListener? = null
+    var newPostsBtnClickListener: OnNewPostsBtnClickListener? = null
+    var morePostsBtnClickListener: OnMorePostsBtnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when(viewType) {
@@ -65,5 +67,13 @@ class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<Recycl
 
     interface OnRepostBtnClickListener {
         fun onRepostBtnClicked(item: PostModel, position: Int)
+    }
+
+    interface OnNewPostsBtnClickListener {
+        fun onNewPostsBtnClicked(itemView: View, adapter: PostAdapter)
+    }
+
+    interface OnMorePostsBtnClickListener {
+        fun onMorePostsBtnClicked(itemView: View, adapter: PostAdapter)
     }
 }
