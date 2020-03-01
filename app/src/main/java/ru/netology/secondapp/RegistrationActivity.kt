@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class RegistrationActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
@@ -33,17 +34,22 @@ class RegistrationActivity : AppCompatActivity(), CoroutineScope by MainScope() 
                         setTitle(R.string.registration)
                         show()
                     }
-                    val response = Repository.register(
-                        edt_login.text.toString(),
-                        edt_password.text.toString())
-                    dialog?.dismiss()
-                    if (response.isSuccessful) {
-                        toast(R.string.success)
-                        setUsrAuth(response.body()!!.id, response.body()!!.token)
-                        startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
-                        finish()
-                    } else {
-                        toast(R.string.registration_failed)
+                    try {
+                        val response = Repository.register(
+                            edt_login.text.toString(),
+                            edt_password.text.toString()
+                        )
+                        dialog?.dismiss()
+                        if (response.isSuccessful) {
+                            toast(R.string.success)
+                            setUsrAuth(response.body()!!.id, response.body()!!.token)
+                            startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
+                            finish()
+                        } else {
+                            toast(R.string.registration_failed)
+                        }
+                    } catch (e: IOException) {
+                        toast(R.string.error_occured)
                     }
                 }
             }

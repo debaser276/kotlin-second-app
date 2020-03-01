@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
@@ -36,18 +37,24 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                             setTitle(getString(R.string.authentication))
                             show()
                         }
-                        val response = Repository.authenticate(
-                            edt_login.text.toString(),
-                            edt_password.text.toString())
-                        dialog?.dismiss()
-                        if (response.isSuccessful) {
-                            toast(R.string.success)
-                            setUsrAuth(response.body()!!.id, response.body()!!.token)
-                            val feedActivityIntent = Intent(this@MainActivity, FeedActivity::class.java)
-                            startActivity(feedActivityIntent)
-                            finish()
-                        } else {
-                            toast(R.string.authentication_failed)
+                        try {
+                            val response = Repository.authenticate(
+                                edt_login.text.toString(),
+                                edt_password.text.toString()
+                            )
+                            dialog?.dismiss()
+                            if (response.isSuccessful) {
+                                toast(R.string.success)
+                                setUsrAuth(response.body()!!.id, response.body()!!.token)
+                                val feedActivityIntent =
+                                    Intent(this@MainActivity, FeedActivity::class.java)
+                                startActivity(feedActivityIntent)
+                                finish()
+                            } else {
+                                toast(R.string.authentication_failed)
+                            }
+                        } catch (e: IOException) {
+                            toast(R.string.error_occured)
                         }
                     }
                 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
+import java.io.IOException
 
 class FeedActivity : AppCompatActivity(),
     CoroutineScope by MainScope(),
@@ -46,21 +47,26 @@ class FeedActivity : AppCompatActivity(),
                 setTitle(R.string.getting_posts)
                 show()
             }
-            val result = Repository.getRecentPosts()
-            dialog?.dismiss()
-            if (result.isSuccessful) {
-                with(container) {
-                    layoutManager = LinearLayoutManager(this@FeedActivity)
-                    postAdapter = PostAdapter(result.body() ?: mutableListOf()).apply {
-                        likeBtnClickListener = this@FeedActivity
-                        repostBtnClickListener = this@FeedActivity
-                        newPostsBtnClickListener = this@FeedActivity
-                        morePostsBtnClickListener = this@FeedActivity
+            try {
+                val result = Repository.getRecentPosts()
+                if (result.isSuccessful) {
+                    with(container) {
+                        layoutManager = LinearLayoutManager(this@FeedActivity)
+                        postAdapter = PostAdapter(result.body() ?: mutableListOf()).apply {
+                            likeBtnClickListener = this@FeedActivity
+                            repostBtnClickListener = this@FeedActivity
+                            newPostsBtnClickListener = this@FeedActivity
+                            morePostsBtnClickListener = this@FeedActivity
+                        }
+                        adapter = postAdapter
                     }
-                    adapter = postAdapter
+                } else {
+                    toast(R.string.error_occured)
                 }
-            } else {
+            } catch(e: IOException) {
                 toast(R.string.error_occured)
+            } finally {
+                dialog?.dismiss()
             }
         }
     }
@@ -69,17 +75,23 @@ class FeedActivity : AppCompatActivity(),
         launch {
             item.likeActionPerforming = true
             with (container) {
-                adapter?.notifyItemChanged(position)
-                val response = if (item.likedSet.contains(context.getUserId())) {
-                    Repository.dislike(item.id)
-                } else {
-                    Repository.like(item.id)
+                try {
+                    adapter?.notifyItemChanged(position)
+                    val response = if (item.likedSet.contains(context.getUserId())) {
+                        Repository.dislike(item.id)
+                    } else {
+                        Repository.like(item.id)
+                    }
+                    if (response.isSuccessful) {
+                        item.updateLikes(response.body()!!)
+                    }
+                    adapter?.notifyItemChanged(position)
+                } catch (e: IOException) {
+                    toast(R.string.error_occured)
+                } finally {
+                    item.likeActionPerforming = false
+                    adapter?.notifyItemChanged(position)
                 }
-                item.likeActionPerforming = false
-                if (response.isSuccessful) {
-                    item.updateLikes(response.body()!!)
-                }
-                adapter?.notifyItemChanged(position)
             }
         }
     }
@@ -90,8 +102,13 @@ class FeedActivity : AppCompatActivity(),
             .show()
         dialog.createPostBtn.setOnClickListener {
             launch {
-                Repository.repost(item.id, dialog.contentEdt.text.toString())
-                dialog.dismiss()
+                try {
+                    Repository.repost(item.id, dialog.contentEdt.text.toString())
+                } catch (e: IOException) {
+                    toast(R.string.error_occured)
+                } finally {
+                    dialog.dismiss()
+                }
             }
         }
     }
@@ -104,15 +121,22 @@ class FeedActivity : AppCompatActivity(),
             loadNewBtn.isEnabled = false
             progressbarNew.visibility = View.VISIBLE
             launch {
-                val response = Repository.getPostsAfter(adapter.list[0].id)
-                progressbarNew.visibility = View.GONE
-                loadNewBtn.isEnabled = true
-                if (response.isSuccessful) {
-                    val newItems = response.body()!!
-                    adapter.list.addAll(0, newItems)
-                    adapter.notifyItemRangeInserted(0, newItems.size)
-                } else {
+                try {
+                    val response = Repository.getPostsAfter(adapter.list[0].id)
+                    progressbarNew.visibility = View.GONE
+                    loadNewBtn.isEnabled = true
+                    if (response.isSuccessful) {
+                        val newItems = response.body()!!
+                        adapter.list.addAll(0, newItems)
+                        adapter.notifyItemRangeInserted(0, newItems.size)
+                    } else {
+                        toast(R.string.error_occured)
+                    }
+                } catch (e: IOException) {
                     toast(R.string.error_occured)
+                } finally {
+                    progressbarNew.visibility = View.GONE
+                    loadNewBtn.isEnabled = true
                 }
             }
         }
@@ -120,13 +144,17 @@ class FeedActivity : AppCompatActivity(),
 
     private fun refreshData() {
         launch {
-            val response = Repository.getPostsAfter(postAdapter.list[0].id)
-            swipeContainer.isRefreshing = false
-            if (response.isSuccessful) {
-                val newItems = response.body()!!
-                postAdapter.list.addAll(0, newItems)
-                postAdapter.notifyItemRangeInserted(0, newItems.size)
-            } else {
+            try {
+                val response = Repository.getPostsAfter(postAdapter.list[0].id)
+                swipeContainer.isRefreshing = false
+                if (response.isSuccessful) {
+                    val newItems = response.body()!!
+                    postAdapter.list.addAll(0, newItems)
+                    postAdapter.notifyItemRangeInserted(0, newItems.size)
+                } else {
+                    toast(R.string.error_occured)
+                }
+            } catch (e: IOException) {
                 toast(R.string.error_occured)
             }
         }
@@ -140,15 +168,22 @@ class FeedActivity : AppCompatActivity(),
             loadMoreBtn.isEnabled = false
             progressbarMore.visibility = View.VISIBLE
             launch {
-                val response = Repository.getPostsBefore(adapter.list[adapter.list.size - 1].id)
-                progressbarMore.visibility = View.GONE
-                loadMoreBtn.isEnabled = true
-                if (response.isSuccessful) {
-                    val newItems = response.body()!!
-                    adapter.list.addAll(newItems)
-                    adapter.notifyItemRangeInserted(adapter.list.size, newItems.size)
-                } else {
+                try {
+                    val response = Repository.getPostsBefore(adapter.list[adapter.list.size - 1].id)
+                    progressbarMore.visibility = View.GONE
+                    loadMoreBtn.isEnabled = true
+                    if (response.isSuccessful) {
+                        val newItems = response.body()!!
+                        adapter.list.addAll(newItems)
+                        adapter.notifyItemRangeInserted(adapter.list.size, newItems.size)
+                    } else {
+                        toast(R.string.error_occured)
+                    }
+                } catch (e: IOException) {
                     toast(R.string.error_occured)
+                } finally {
+                    progressbarMore.visibility = View.GONE
+                    loadMoreBtn.isEnabled = true
                 }
             }
         }

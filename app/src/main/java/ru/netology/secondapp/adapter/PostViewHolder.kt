@@ -1,6 +1,5 @@
 package ru.netology.firstapp.adapter
 
-import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -8,8 +7,6 @@ import kotlinx.android.synthetic.main.post_item_view.view.*
 import ru.netology.secondapp.*
 import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
-import java.text.SimpleDateFormat
-import java.util.*
 
 class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(view) {
 
@@ -58,12 +55,13 @@ class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(
                 else -> repostsTv.text = "999+"
             }
 
+            val userId = context.getUserId()
             when {
                 post.likeActionPerforming -> {
                     likesTv.setTextColor(Color.BLUE)
                     likesIv.setImageResource(R.drawable.ic_likes_pending_24dp)
                 }
-                post.likedSet.contains(context.getUserId()) -> {
+                post.likedSet.contains(userId) -> {
                     likesTv.setTextColor(Color.RED)
                     likesIv.setImageResource(R.drawable.ic_likes_active_24dp)
                 }
@@ -72,7 +70,7 @@ class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(
                     likesIv.setImageResource(R.drawable.ic_likes_inactive_24dp)
                 }
             }
-            if (post.repostedSet.contains(context.getUserId())) {
+            if (post.repostedSet.contains(userId)) {
                 repostsTv.setTextColor(Color.RED)
                 repostsIv.setImageResource(R.drawable.ic_repost_active_24dp)
             }
