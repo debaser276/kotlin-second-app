@@ -20,4 +20,6 @@
     <string name="error_occured">Error occured</string>
     <string name="getting_posts">Getting posts</string>
     <string name="like_in_progress">Like in progress</string>
+    <string name="load_new_posts">Load new posts</string>
+    <string name="load_more_posts">Load more posts</string>
 </resources>
