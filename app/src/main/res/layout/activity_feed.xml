@@ -6,13 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".FeedActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/container"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#EEEEEE"
-        android:padding="8dp"
-        tools:listitem="@layout/post_item_view" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"
+            android:padding="8dp"
+            tools:listitem="@layout/post_item_view" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

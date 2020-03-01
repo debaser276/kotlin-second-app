@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.item_load_more.view.*
+import kotlinx.android.synthetic.main.item_load_new.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class FeedActivity : AppCompatActivity(),
     PostAdapter.OnMorePostsBtnClickListener {
 
     var dialog: LoadingDialog? = null
+    private lateinit var postAdapter: PostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,10 @@ class FeedActivity : AppCompatActivity(),
 
         fab.setOnClickListener {
             startActivity(Intent(this, CreatePostActivity::class.java))
+        }
+
+        swipeContainer.setOnRefreshListener {
+            refreshData()
         }
     }
 
@@ -45,12 +51,13 @@ class FeedActivity : AppCompatActivity(),
             if (result.isSuccessful) {
                 with(container) {
                     layoutManager = LinearLayoutManager(this@FeedActivity)
-                    adapter = PostAdapter(result.body() ?: mutableListOf()).apply {
+                    postAdapter = PostAdapter(result.body() ?: mutableListOf()).apply {
                         likeBtnClickListener = this@FeedActivity
                         repostBtnClickListener = this@FeedActivity
                         newPostsBtnClickListener = this@FeedActivity
                         morePostsBtnClickListener = this@FeedActivity
                     }
+                    adapter = postAdapter
                 }
             } else {
                 toast(R.string.error_occured)
@@ -94,12 +101,12 @@ class FeedActivity : AppCompatActivity(),
         adapter: PostAdapter
     ) {
         with (itemView) {
-            loadMoreBtn.isEnabled = false
-            progressbar.visibility = View.VISIBLE
+            loadNewBtn.isEnabled = false
+            progressbarNew.visibility = View.VISIBLE
             launch {
                 val response = Repository.getPostsAfter(adapter.list[0].id)
-                progressbar.visibility = View.GONE
-                loadMoreBtn.isEnabled = true
+                progressbarNew.visibility = View.GONE
+                loadNewBtn.isEnabled = true
                 if (response.isSuccessful) {
                     val newItems = response.body()!!
                     adapter.list.addAll(0, newItems)
@@ -111,16 +118,30 @@ class FeedActivity : AppCompatActivity(),
         }
     }
 
+    private fun refreshData() {
+        launch {
+            val response = Repository.getPostsAfter(postAdapter.list[0].id)
+            swipeContainer.isRefreshing = false
+            if (response.isSuccessful) {
+                val newItems = response.body()!!
+                postAdapter.list.addAll(0, newItems)
+                postAdapter.notifyItemRangeInserted(0, newItems.size)
+            } else {
+                toast(R.string.error_occured)
+            }
+        }
+    }
+
     override fun onMorePostsBtnClicked(
         itemView: View,
         adapter: PostAdapter
     ) {
         with (itemView) {
             loadMoreBtn.isEnabled = false
-            progressbar.visibility = View.VISIBLE
+            progressbarMore.visibility = View.VISIBLE
             launch {
                 val response = Repository.getPostsBefore(adapter.list[adapter.list.size - 1].id)
-                progressbar.visibility = View.GONE
+                progressbarMore.visibility = View.GONE
                 loadMoreBtn.isEnabled = true
                 if (response.isSuccessful) {
                     val newItems = response.body()!!

@@ -32,11 +32,11 @@ class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<Recycl
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.repost_item_view, parent, false)
             )
-            ITEM_HEADER -> HeaderViewHolder(
-                this,
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_load_new, parent, false)
-            )
+//            ITEM_HEADER -> HeaderViewHolder(
+//                this,
+//                LayoutInflater.from(parent.context)
+//                    .inflate(R.layout.item_load_new, parent, false)
+//            )
             else -> FooterViewHolder(
                 this,
                 LayoutInflater.from(parent.context)
@@ -44,20 +44,20 @@ class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<Recycl
             )
         }
 
-    override fun getItemCount(): Int = list.size + 2
+    override fun getItemCount(): Int = list.size + 1
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is PostViewHolder -> holder.bind(list[position - 1])
-            is RepostViewHolder -> holder.bind(list[position - 1])
+            is PostViewHolder -> holder.bind(list[position])
+            is RepostViewHolder -> holder.bind(list[position])
         }
     }
 
     override fun getItemViewType(position: Int): Int =
         when {
-            position == 0 -> ITEM_HEADER
-            position == list.size + 1 -> ITEM_FOOTER
-            list[position - 1].sourceId == null -> ITEM_TYPE_POST
+//            position == 0 -> ITEM_HEADER
+            position == list.size -> ITEM_FOOTER
+            list[position].sourceId == null -> ITEM_TYPE_POST
             else -> ITEM_TYPE_REPOST
         }
 
