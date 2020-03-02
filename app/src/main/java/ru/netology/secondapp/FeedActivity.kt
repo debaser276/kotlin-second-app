@@ -23,7 +23,6 @@ class FeedActivity : AppCompatActivity(),
     CoroutineScope by MainScope(),
     PostAdapter.OnLikeBtnClickListener,
     PostAdapter.OnRepostBtnClickListener,
-    PostAdapter.OnNewPostsBtnClickListener,
     PostAdapter.OnMorePostsBtnClickListener {
 
     private lateinit var postAdapter: PostAdapter
@@ -56,7 +55,6 @@ class FeedActivity : AppCompatActivity(),
                         postAdapter = PostAdapter(result.body() ?: mutableListOf()).apply {
                             likeBtnClickListener = this@FeedActivity
                             repostBtnClickListener = this@FeedActivity
-                            newPostsBtnClickListener = this@FeedActivity
                             morePostsBtnClickListener = this@FeedActivity
                         }
                         adapter = postAdapter
@@ -115,35 +113,6 @@ class FeedActivity : AppCompatActivity(),
                     toast(R.string.error_occured)
                 } finally {
                     dialog.dismiss()
-                }
-            }
-        }
-    }
-
-    override fun onNewPostsBtnClicked(
-        itemView: View,
-        adapter: PostAdapter
-    ) {
-        with (itemView) {
-            loadNewBtn.isEnabled = false
-            progressbarNew.visibility = View.VISIBLE
-            launch {
-                try {
-                    val response = Repository.getPostsAfter(adapter.list[0].id)
-                    progressbarNew.visibility = View.GONE
-                    loadNewBtn.isEnabled = true
-                    if (response.isSuccessful) {
-                        val newItems = response.body()!!
-                        adapter.list.addAll(0, newItems)
-                        adapter.notifyItemRangeInserted(0, newItems.size)
-                    } else {
-                        toast(R.string.error_occured)
-                    }
-                } catch (e: IOException) {
-                    toast(R.string.error_occured)
-                } finally {
-                    progressbarNew.visibility = View.GONE
-                    loadNewBtn.isEnabled = true
                 }
             }
         }
