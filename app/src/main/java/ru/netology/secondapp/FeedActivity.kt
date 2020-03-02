@@ -83,7 +83,7 @@ class FeedActivity : AppCompatActivity(),
             item.likeActionPerforming = true
             with (container) {
                 try {
-                    adapter?.notifyItemChanged(position)
+                    postAdapter.notifyItemChanged(position)
                     val response = if (item.likedSet.contains(context.getUserId())) {
                         Repository.dislike(item.id)
                     } else {
@@ -92,12 +92,12 @@ class FeedActivity : AppCompatActivity(),
                     if (response.isSuccessful) {
                         item.updateLikes(response.body()!!)
                     }
-                    adapter?.notifyItemChanged(position)
+                    postAdapter.notifyItemChanged(position)
                 } catch (e: IOException) {
                     toast(R.string.error_occured)
                 } finally {
                     item.likeActionPerforming = false
-                    adapter?.notifyItemChanged(position)
+                    postAdapter.notifyItemChanged(position)
                 }
             }
         }
