@@ -42,7 +42,7 @@ open class RepostViewHolder(adapter: PostAdapter, view: View): RecyclerView.View
                     if (likesTv.visibility == View.GONE) likesTv.visibility = View.VISIBLE
                     likesTv.text = post.likes.toString()
                 }
-                else -> likesTv.text = "999+"
+                else -> likesTv.setText(R.string.likes_over_limit)
             }
 
             when {

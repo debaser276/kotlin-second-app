@@ -1,11 +1,10 @@
-package ru.netology.firstapp.adapter
+package ru.netology.secondapp.adapter
 
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.post_item_view.view.*
 import ru.netology.secondapp.*
-import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
 
 class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(view) {
@@ -47,12 +46,12 @@ class PostViewHolder(adapter: PostAdapter, view: View): RecyclerView.ViewHolder(
                     if (likesTv.visibility == View.GONE) likesTv.visibility = View.VISIBLE
                     likesTv.text = post.likes.toString()
                 }
-                else -> likesTv.text = "999+"
+                else -> likesTv.setText(R.string.likes_over_limit)
             }
             when {
                 post.reposts <= 0 -> repostsTv.visibility = View.GONE
                 post.reposts in 1..999 -> repostsTv.text = post.reposts.toString()
-                else -> repostsTv.text = "999+"
+                else -> repostsTv.setText(R.string.likes_over_limit)
             }
 
             val userId = context.getUserId()
