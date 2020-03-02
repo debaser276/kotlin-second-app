@@ -10,15 +10,13 @@ import java.io.IOException
 
 class CreatePostActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
-    private var dialog: LoadingDialog? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
 
         createPostBtn.setOnClickListener {
             launch {
-                dialog = LoadingDialog(this@CreatePostActivity).apply {
+                val dialog = LoadingDialog(this@CreatePostActivity).apply {
                     setTitle(R.string.creating_new_post)
                     show()
                 }
@@ -33,7 +31,7 @@ class CreatePostActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 } catch (e: IOException) {
                     toast(R.string.error_occured)
                 } finally {
-                    dialog?.dismiss()
+                    dialog.dismiss()
                 }
             }
         }

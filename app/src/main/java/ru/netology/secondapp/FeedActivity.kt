@@ -26,7 +26,6 @@ class FeedActivity : AppCompatActivity(),
     PostAdapter.OnNewPostsBtnClickListener,
     PostAdapter.OnMorePostsBtnClickListener {
 
-    var dialog: LoadingDialog? = null
     private lateinit var postAdapter: PostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +44,7 @@ class FeedActivity : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
         launch {
-            dialog = LoadingDialog(this@FeedActivity).apply {
+            val dialog = LoadingDialog(this@FeedActivity).apply {
                 setTitle(R.string.getting_posts)
                 show()
             }
@@ -74,7 +73,7 @@ class FeedActivity : AppCompatActivity(),
             } catch(e: IOException) {
                 toast(R.string.error_occured)
             } finally {
-                dialog?.dismiss()
+                dialog.dismiss()
             }
         }
     }

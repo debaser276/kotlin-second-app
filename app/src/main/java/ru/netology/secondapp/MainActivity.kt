@@ -14,8 +14,6 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
-    private var dialog: LoadingDialog? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,7 +31,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                     edt_password.error = resources.getString(R.string.password_incorrect)
                 } else {
                     launch {
-                        dialog = LoadingDialog(this@MainActivity).apply {
+                        val dialog = LoadingDialog(this@MainActivity).apply {
                             setTitle(getString(R.string.authentication))
                             show()
                         }
@@ -42,7 +40,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                                 edt_login.text.toString(),
                                 edt_password.text.toString()
                             )
-                            dialog?.dismiss()
                             if (response.isSuccessful) {
                                 toast(R.string.success)
                                 setUsrAuth(response.body()!!.id, response.body()!!.token)
@@ -55,6 +52,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                             }
                         } catch (e: IOException) {
                             toast(R.string.error_occured)
+                        } finally {
+                            dialog.dismiss()
                         }
                     }
                 }
@@ -93,6 +92,5 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     override fun onStop() {
         super.onStop()
         cancel()
-        dialog?.dismiss()
     }
 }
