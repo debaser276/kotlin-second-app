@@ -10,15 +10,16 @@ import ru.netology.secondapp.dto.PostModel
 
 class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val ITEM_TYPE_POST = 1
-    private val ITEM_TYPE_REPOST = 2
-    private val ITEM_FOOTER = 3
-    private val ITEM_HEADER = 4
-
     var likeBtnClickListener: OnLikeBtnClickListener? = null
     var repostBtnClickListener: OnRepostBtnClickListener? = null
     var newPostsBtnClickListener: OnNewPostsBtnClickListener? = null
     var morePostsBtnClickListener: OnMorePostsBtnClickListener? = null
+
+    companion object {
+        private const val ITEM_TYPE_POST = 1
+        private const val ITEM_TYPE_REPOST = 2
+        private const val ITEM_FOOTER = 3
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when(viewType) {
@@ -32,11 +33,6 @@ class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<Recycl
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.repost_item_view, parent, false)
             )
-//            ITEM_HEADER -> HeaderViewHolder(
-//                this,
-//                LayoutInflater.from(parent.context)
-//                    .inflate(R.layout.item_load_new, parent, false)
-//            )
             else -> FooterViewHolder(
                 this,
                 LayoutInflater.from(parent.context)
@@ -55,7 +51,6 @@ class PostAdapter(val list: MutableList<PostModel>): RecyclerView.Adapter<Recycl
 
     override fun getItemViewType(position: Int): Int =
         when {
-//            position == 0 -> ITEM_HEADER
             position == list.size -> ITEM_FOOTER
             list[position].sourceId == null -> ITEM_TYPE_POST
             else -> ITEM_TYPE_REPOST
