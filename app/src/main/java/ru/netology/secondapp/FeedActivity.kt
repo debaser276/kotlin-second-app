@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.edit
@@ -16,7 +15,6 @@ import kotlinx.android.synthetic.main.item_load_new.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
 import java.io.IOException
@@ -65,7 +63,7 @@ class FeedActivity : AppCompatActivity(),
                         adapter = postAdapter
                     }
                 } else if (result.code() == 401) {
-                    getSharedPreferences(API_SHARED_file, Context.MODE_PRIVATE).edit {
+                    getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
                         clear()
                         apply()
                     }

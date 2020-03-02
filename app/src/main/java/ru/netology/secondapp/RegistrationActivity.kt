@@ -57,7 +57,7 @@ class RegistrationActivity : AppCompatActivity(), CoroutineScope by MainScope() 
     }
 
     private fun setUsrAuth(id: Int, token: String) {
-        getSharedPreferences(API_SHARED_file, Context.MODE_PRIVATE).edit {
+        getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
             putString(AUTHENTICATED_SHARED_KEY, token)
             putInt(AUTHENTICATED_ID, id)
         }

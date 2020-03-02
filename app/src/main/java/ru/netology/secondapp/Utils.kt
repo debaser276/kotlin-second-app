@@ -14,7 +14,7 @@ fun isValid(password: String) = pattern
 
 fun Context.toast(res: Int) = Toast.makeText(this, this.resources.getString(res), Toast.LENGTH_SHORT).show()
 
-fun Context.getUserId(): Int = this.getSharedPreferences(API_SHARED_file, Context.MODE_PRIVATE).getInt(
+fun Context.getUserId(): Int = this.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getInt(
     AUTHENTICATED_ID, 0)
 
 object TimeConverter {
