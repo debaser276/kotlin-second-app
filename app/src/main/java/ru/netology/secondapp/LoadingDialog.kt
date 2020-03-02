@@ -9,7 +9,7 @@ class LoadingDialog(context: Context): AlertDialog(context) {
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null)
         val tvMessage = view.findViewById<TextView>(R.id.tv_message)
-        tvMessage.text = "${context.resources.getString(R.string.please_wait)}"
+        tvMessage.setText(R.string.please_wait)
         setView(view)
         setCancelable(false)
     }

@@ -12,7 +12,7 @@ enum class PostType {
     POST, VIDEO, EVENT, AD, REPOST
 }
 
-class Location(val lat: Double, val lng: Double)
+data class Location(val lat: Double, val lng: Double)
 
 infix fun Double.x(that: Double) = Location(this, that)
 
@@ -38,7 +38,6 @@ data class PostModel (
     val type: PostType = PostType.POST
 ) {
     var likeActionPerforming = false
-    var repostActionPerforming = false
 
     fun updateLikes(updateModel: PostModel) {
         if (id != updateModel.id) throw IllegalStateException()
