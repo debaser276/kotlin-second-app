@@ -13,7 +13,7 @@ data class Token(val id: Int, val token: String)
 
 data class RegistrationRequestParams(val username: String, val password: String)
 
-data class CreatePostRequest(val content: String, val type: PostType = PostType.POST)
+data class CreatePostRequest(val content: String, val type: PostType = PostType.POST, val media: String?)
 
 data class CreateRepostRequest(val content: String, val type: PostType = PostType.REPOST)
 
