@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.netology.secondapp.api.*
 import ru.netology.secondapp.api.interceptor.InjectAuthTokenInterceptor
-import ru.netology.secondapp.dto.MediaModel
+import ru.netology.secondapp.dto.AttachmentModel
 import java.io.ByteArrayOutputStream
 
 object Repository {
@@ -46,8 +46,8 @@ object Repository {
     suspend fun register(login: String, password: String) =
         API.register(RegistrationRequestParams(login, password))
 
-    suspend fun createPost(content: String) = API.createPost(
-        CreatePostRequest(content = content)
+    suspend fun createPost(content: String, attachmentModel: AttachmentModel?) = API.createPost(
+        CreatePostRequest(content = content, media = attachmentModel?.id)
     )
 
     suspend fun getPosts() = API.getPosts()
@@ -64,7 +64,7 @@ object Repository {
 
     suspend fun repost(id: Int, content: String) = API.repost(id, CreateRepostRequest(content = content))
 
-    suspend fun uploadImage(bitmap: Bitmap): Response<MediaModel> {
+    suspend fun uploadImage(bitmap: Bitmap): Response<AttachmentModel> {
         val bos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
         val reqFile = RequestBody.create(MediaType.parse("image/jpeg"), bos.toByteArray())

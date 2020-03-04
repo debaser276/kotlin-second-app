@@ -6,7 +6,7 @@ enum class MediaType {
     IMAGE
 }
 
-data class MediaModel(val id: String, val url: String, val type: MediaType)
+data class AttachmentModel(val id: String, val url: String, val type: MediaType)
 
 enum class PostType {
     POST, VIDEO, EVENT, AD, REPOST
@@ -26,8 +26,6 @@ data class PostModel (
     val loc: Location? = null,
     val link: String? = null,
     val sourceId: Int? = null,
-    val media: String? = null,
-    val mediaType: MediaType? = null,
     var likes: Int = 0,
     var likedSet: MutableSet<Int> = mutableSetOf(),
     var reposts: Int = 0,
@@ -35,7 +33,8 @@ data class PostModel (
     var shares: Int = 0,
     var sharedByMe: Boolean = false,
     var views: Int = 0,
-    val type: PostType = PostType.POST
+    val type: PostType = PostType.POST,
+    val attachment: AttachmentModel? = null
 ) {
     var likeActionPerforming = false
 

@@ -3,7 +3,7 @@ package ru.netology.secondapp.api
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
-import ru.netology.secondapp.dto.MediaModel
+import ru.netology.secondapp.dto.AttachmentModel
 import ru.netology.secondapp.dto.PostModel
 import ru.netology.secondapp.dto.PostType
 
@@ -55,5 +55,5 @@ interface API {
 
     @Multipart
     @POST("api/v1/media")
-    suspend fun uploadImage(@Part file: MultipartBody.Part): Response<MediaModel>
+    suspend fun uploadImage(@Part file: MultipartBody.Part): Response<AttachmentModel>
 }

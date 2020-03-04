@@ -23,4 +23,5 @@
     <string name="load_new_posts">Load new posts</string>
     <string name="load_more_posts">Load more posts</string>
     <string name="likes_over_limit">999+</string>
+    <string name="cant_upload_image">Can\'t upload image</string>
 </resources>
