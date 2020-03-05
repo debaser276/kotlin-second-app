@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         btn_registration.setOnClickListener {
             val registrationIntent = Intent(this, RegistrationActivity::class.java)
             startActivity(registrationIntent)
-            finish()
         }
     }
 
