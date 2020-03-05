@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream
 object Repository {
 
     private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://debaser-kotlin-ktor.herokuapp.com/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -31,7 +31,7 @@ object Repository {
             .build()
         retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl("https://debaser-kotlin-ktor.herokuapp.com/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         API = retrofit.create(ru.netology.secondapp.api.API::class.java)

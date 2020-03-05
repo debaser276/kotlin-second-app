@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import ru.netology.secondapp.dto.AttachmentModel
+import ru.netology.secondapp.dto.MediaType
 import java.io.IOException
 
 class CreatePostActivity : AppCompatActivity(), CoroutineScope by MainScope() {
@@ -69,6 +70,7 @@ class CreatePostActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                     }
                     try {
                         val imageUploadResult = Repository.uploadImage(it)
+                        NotificationHelper.mediaUploaded(MediaType.IMAGE, this@CreatePostActivity)
                         if (imageUploadResult.isSuccessful) {
                             attachPhotoImg.setImageResource(R.drawable.ic_add_a_photo_inactive)
                             attachPhotoDoneImg.visibility = View.VISIBLE
