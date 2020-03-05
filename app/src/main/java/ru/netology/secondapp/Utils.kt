@@ -2,6 +2,7 @@ package ru.netology.secondapp
 
 import android.content.Context
 import android.widget.Toast
+import androidx.core.content.edit
 import java.util.regex.Pattern
 
 private val pattern by lazy(LazyThreadSafetyMode.NONE) {
@@ -16,6 +17,16 @@ fun Context.toast(res: Int) = Toast.makeText(this, this.resources.getString(res)
 
 fun Context.getUserId(): Int = this.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getInt(
     AUTHENTICATED_ID, 0)
+
+fun isFirstTime(context: Context) =
+    context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getBoolean(
+        FIRST_TIME_SHARED_KEY, true
+    )
+
+fun setNotFirstTime(context: Context) =
+    context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE)
+        .edit()
+        .putBoolean(FIRST_TIME_SHARED_KEY, false)
 
 object TimeConverter {
     fun convertSeconds(seconds: Long): String {
