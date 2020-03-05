@@ -163,4 +163,12 @@ class FeedActivity : AppCompatActivity(),
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isFirstTime(this)) {
+            NotificationHelper.comebackNotification(this)
+            setNotFirstTime(this)
+        }
+    }
 }

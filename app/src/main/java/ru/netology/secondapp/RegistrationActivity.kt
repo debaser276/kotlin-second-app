@@ -40,7 +40,6 @@ class RegistrationActivity : AppCompatActivity(), CoroutineScope by MainScope() 
                         if (response.isSuccessful) {
                             toast(R.string.success)
                             setUsrAuth(response.body()!!.id, response.body()!!.token)
-                            startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
                             finish()
                         } else {
                             toast(R.string.registration_failed)

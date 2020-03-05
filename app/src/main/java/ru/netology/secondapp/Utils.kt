@@ -24,9 +24,9 @@ fun isFirstTime(context: Context) =
     )
 
 fun setNotFirstTime(context: Context) =
-    context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE)
-        .edit()
-        .putBoolean(FIRST_TIME_SHARED_KEY, false)
+    context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
+        putBoolean(FIRST_TIME_SHARED_KEY, false)
+    }
 
 object TimeConverter {
     fun convertSeconds(seconds: Long): String {
