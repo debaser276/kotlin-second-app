@@ -29,21 +29,26 @@ object NotificationHelper {
         }
     }
 
+    fun comebackNotification(context: Context) {
+        createNotificationChannelIfNotCreated(context)
+        val title = "Понравилось ли вам у нас?"
+        val content = "Дорогой пользователь, возвращайтесь к нам скорее"
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createBuilder(context, title, content, NotificationManager.IMPORTANCE_HIGH)
+        } else {
+            createBuilder(context, title, content)
+        }
+        showNotification(context, builder)
+    }
+
     fun mediaUploaded(type: MediaType, context: Context) {
         createNotificationChannelIfNotCreated(context)
+        val title = "Media uploaded"
+        val content = "your ${type.name.toLowerCase()} successfully uploaded"
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createBuilder(
-                context,
-                "Media uploaded",
-                "your ${type.name.toLowerCase()} successfully uploaded",
-            NotificationManager.IMPORTANCE_HIGH
-            )
+            createBuilder(context, title, content, NotificationManager.IMPORTANCE_HIGH)
         } else {
-            createBuilder(
-                context,
-                "Media uploaded",
-                "your ${type.name.toLowerCase()} successfully uploaded"
-            )
+            createBuilder(context, title, content)
         }
         showNotification(context, builder)
     }
