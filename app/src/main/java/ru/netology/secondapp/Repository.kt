@@ -47,7 +47,7 @@ object Repository {
         API.register(RegistrationRequestParams(login, password))
 
     suspend fun createPost(content: String, attachmentModel: AttachmentModel?) = API.createPost(
-        CreatePostRequest(content = content, media = attachmentModel?.id)
+        CreatePostRequest(content = content, attachmentId = attachmentModel?.id)
     )
 
     suspend fun getPosts() = API.getPosts()

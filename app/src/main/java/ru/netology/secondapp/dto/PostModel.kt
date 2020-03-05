@@ -1,12 +1,16 @@
 package ru.netology.secondapp.dto
 
+import ru.netology.secondapp.BASE_URL
 import java.lang.IllegalStateException
 
 enum class MediaType {
     IMAGE
 }
 
-data class AttachmentModel(val id: String, val url: String, val type: MediaType)
+data class AttachmentModel(val id: String, val mediaType: MediaType) {
+    val url
+        get() = "$BASE_URL/api/v1/static/$id"
+}
 
 enum class PostType {
     POST, VIDEO, EVENT, AD, REPOST

@@ -2,10 +2,13 @@ package ru.netology.secondapp.adapter
 
 import android.graphics.Color
 import android.view.View
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.post_item_view.view.*
 import ru.netology.secondapp.R
 import ru.netology.secondapp.TimeConverter
+import ru.netology.secondapp.dto.MediaType
 import ru.netology.secondapp.dto.PostModel
 import ru.netology.secondapp.getUserId
 import ru.netology.secondapp.toast
@@ -59,6 +62,17 @@ open class BaseViewHolder(adapter: PostAdapter, view: View) : RecyclerView.ViewH
                     likesIv.setImageResource(R.drawable.ic_likes_inactive_24dp)
                 }
             }
+
+            when (post.attachment?.mediaType) {
+                MediaType.IMAGE -> loadImage(photoImage, post.attachment.url)
+                else -> {}
+            }
         }
+    }
+
+    private fun loadImage(photoImage: ImageView, imageUrl: String) {
+        Glide.with(photoImage)
+            .load(imageUrl)
+            .into(photoImage)
     }
 }
