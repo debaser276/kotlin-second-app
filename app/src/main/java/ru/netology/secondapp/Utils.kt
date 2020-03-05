@@ -19,13 +19,14 @@ fun Context.getUserId(): Int = this.getSharedPreferences(API_SHARED_FILE, Contex
     AUTHENTICATED_ID, 0)
 
 fun isFirstTime(context: Context) =
-    context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getBoolean(
-        FIRST_TIME_SHARED_KEY, true
-    )
+    context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getLong(
+        LAST_TIME_VISIT_SHARED_KEY, 0
+    ) == 0L
 
-fun setNotFirstTime(context: Context) =
+fun setNotFirstTime(context: Context, currentTimeMillis: Long) =
     context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
-        putBoolean(FIRST_TIME_SHARED_KEY, false)
+        putLong(LAST_TIME_VISIT_SHARED_KEY, currentTimeMillis)
+        apply()
     }
 
 object TimeConverter {
