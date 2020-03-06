@@ -3,7 +3,9 @@ package ru.netology.secondapp
 import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -13,6 +15,7 @@ import java.util.*
 object NotificationHelper {
 
     private const val UPLOAD_CHANNEL_ID = "upload_channel_id"
+    private const val MAIN_ACTIVITY_REQUEST = 1
     private var channelCreated = false
     private var lastNotificationId: Int? = null
 
@@ -98,6 +101,12 @@ object NotificationHelper {
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    MAIN_ACTIVITY_REQUEST,
+                    Intent(context, MainActivity::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT))
         return builder
     }
 

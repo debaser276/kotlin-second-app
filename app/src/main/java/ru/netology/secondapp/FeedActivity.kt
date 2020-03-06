@@ -64,6 +64,7 @@ class FeedActivity : AppCompatActivity(),
                         adapter = postAdapter
                     }
                 } else if (result.code() == 401) {
+                    toast(R.string.unauthorized)
                     getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
                         clear()
                         apply()

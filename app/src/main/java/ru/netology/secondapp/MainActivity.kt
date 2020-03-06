@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                             if (response.isSuccessful) {
                                 toast(R.string.success)
                                 setUsrAuth(response.body()!!.id, response.body()!!.token)
+                                Repository.createRetrofitWithAuthToken(response.body()!!.token)
                                 val feedActivityIntent =
                                     Intent(this@MainActivity, FeedActivity::class.java)
                                 startActivity(feedActivityIntent)
