@@ -53,6 +53,18 @@ object NotificationHelper {
         showNotification(context, builder)
     }
 
+    fun remindNotification(context: Context) {
+        createNotificationChannelIfNotCreated(context)
+        val title = "Where are you?"
+        val content = "Дорогой пользователь, возвращайтесь к нам скорее"
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createBuilder(context, title, content, NotificationManager.IMPORTANCE_HIGH)
+        } else {
+            createBuilder(context, title, content)
+        }
+        showNotification(context, builder)
+    }
+
     private fun showNotification(
         context: Context,
         builder: NotificationCompat.Builder

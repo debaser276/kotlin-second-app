@@ -23,7 +23,7 @@ fun isFirstTime(context: Context) =
         LAST_TIME_VISIT_SHARED_KEY, 0
     ) == 0L
 
-fun setNotFirstTime(context: Context, currentTimeMillis: Long) =
+fun setLastVisitTime(context: Context, currentTimeMillis: Long) =
     context.getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
         putLong(LAST_TIME_VISIT_SHARED_KEY, currentTimeMillis)
         apply()

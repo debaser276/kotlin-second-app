@@ -8,6 +8,9 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.item_load_more.view.*
@@ -17,6 +20,7 @@ import kotlinx.coroutines.launch
 import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 class FeedActivity : AppCompatActivity(),
     CoroutineScope by MainScope(),
@@ -28,6 +32,7 @@ class FeedActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        scheduleJob()
         setContentView(R.layout.activity_feed)
 
         fab.setOnClickListener {
@@ -168,7 +173,16 @@ class FeedActivity : AppCompatActivity(),
         super.onDestroy()
         if (isFirstTime(this)) {
             NotificationHelper.comebackNotification(this)
-            setNotFirstTime(this)
         }
+        setLastVisitTime(this, System.currentTimeMillis())
+    }
+
+    private fun scheduleJob() {
+        val checkWork = PeriodicWorkRequestBuilder<UserNotHereWorker>(
+            SHOW_NOTIFICATION_AFTER_UNVISITED_MS, TimeUnit.MILLISECONDS
+        ).build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork("uses_present_work", ExistingPeriodicWorkPolicy.KEEP, checkWork)
     }
 }
