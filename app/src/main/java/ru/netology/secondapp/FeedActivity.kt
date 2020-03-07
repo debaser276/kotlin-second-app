@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.item_load_more.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
@@ -176,6 +177,7 @@ class FeedActivity : AppCompatActivity(),
             NotificationHelper.comebackNotification(this)
         }
         setLastVisitTime(this, System.currentTimeMillis())
+        cancel()
     }
 
     private fun scheduleJob() {
