@@ -20,7 +20,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/contentTil"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
