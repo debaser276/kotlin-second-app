@@ -31,12 +31,8 @@ fun setLastVisitTime(context: Context, currentTimeMillis: Long) =
         apply()
     }
 
-fun Context.toPlurals(resId: Int, plural: Long): String {
-    val resources = createConfigurationContext(Configuration(this.resources.configuration).apply {
-        setLocale(Locale("ru"))
-    }).resources
-    return resources.getQuantityString(resId, plural.toInt(), plural.toInt())
-}
+fun Context.toPlurals(resId: Int, plural: Long) =
+    this.resources.getQuantityString(resId, plural.toInt(), plural.toInt())
 
 object TimeConverter {
     fun convertSeconds(seconds: Long, context: Context): String {
@@ -53,7 +49,7 @@ object TimeConverter {
             seconds / inDay > 0 -> context.toPlurals(R.plurals.days, seconds / inDay)
             seconds / inHour > 0 -> context.toPlurals(R.plurals.hours, seconds / inHour)
             seconds / inMinute > 0 -> context.toPlurals(R.plurals.minutes, seconds / inMinute)
-            else -> "менее минуты"
-        } + " назад"
+            else -> context.resources.getString(R.string.less_than_minute)
+        } + " ${context.resources.getString(R.string.ago)}"
     }
 }

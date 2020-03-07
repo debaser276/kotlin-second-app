@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="less_than_minute">Менее минуты</string>
+    <string name="ago">назад</string>
+    <string name="authentication">Авторизация</string>
+    <string name="authentication_failed">Ошибка авторизация</string>
+    <string name="cant_upload_image">Невозможно загрузить изображение</string>
+    <string name="create">Создать</string>
+    <string name="create_new_post">Создать новый пост</string>
+    <string name="creating_new_post">Создание нового поста</string>
+    <string name="enter_login">Введите логи</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_your_post_content">Введите текст поста</string>
+    <string name="error_occured">Произошла ошибка</string>
+    <string name="getting_posts">Получение постов</string>
+    <string name="like_in_progress">Лайкание</string>
+    <string name="load_more_posts">Загрузить еще постов</string>
+    <string name="login">Логин</string>
+    <string name="password_incorrect">Пароль не верный</string>
+    <string name="passwords_not_match">Пароли не совпадают</string>
+    <string name="please_wait">Пожалуйста, подождите...</string>
+    <string name="post_created_successfully">Пост создан успешно</string>
+    <string name="registration">Регистрация</string>
+    <string name="registration_failed">Ошибка регистрации</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="success">Успешно</string>
+    <string name="unauthorized">Не удалось авторизоваться</string>
+</resources>

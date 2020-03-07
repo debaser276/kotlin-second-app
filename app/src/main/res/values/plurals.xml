@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="years">
-        <item quantity="one">%1$d год</item>
-        <item quantity="few">%1$d года</item>
-        <item quantity="many">Несколько лет</item>
-        <item quantity="other">Несколько лет</item>
+        <item quantity="one">%1$d year</item>
+        <item quantity="many">Some years</item>
     </plurals>
     <plurals name="months">
-        <item quantity="one">%1$d месяц</item>
-        <item quantity="few">%1$d месяца</item>
-        <item quantity="many">%1$d месяцев</item>
-        <item quantity="other">%1$d месяцев</item>
+        <item quantity="one">%1$d month</item>
+        <item quantity="many">%1$d months</item>
     </plurals>
     <plurals name="days">
-        <item quantity="one">%1$d день</item>
-        <item quantity="few">%1$d дня</item>
-        <item quantity="many">%1$d дней</item>
-        <item quantity="other">%1$d дней</item>
+        <item quantity="one">%1$d day</item>
+        <item quantity="many">%1$d days</item>
     </plurals>
     <plurals name="hours">
-        <item quantity="one">%d час</item>
-        <item quantity="few">%d часа</item>
-        <item quantity="many">%d часов</item>
-        <item quantity="other">%d часов</item>
+        <item quantity="one">%d hour</item>
+        <item quantity="many">%d hours</item>
     </plurals>
     <plurals name="minutes">
-        <item quantity="one">%d минуту</item>
-        <item quantity="few">%d минуты</item>
-        <item quantity="many">%d минут</item>
-        <item quantity="other">%d минут</item>
+        <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
     </plurals>
 </resources>
