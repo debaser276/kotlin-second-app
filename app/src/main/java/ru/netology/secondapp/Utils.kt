@@ -1,8 +1,10 @@
 package ru.netology.secondapp
 
 import android.content.Context
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.core.content.edit
+import java.util.*
 import java.util.regex.Pattern
 
 private val pattern by lazy(LazyThreadSafetyMode.NONE) {
@@ -29,7 +31,12 @@ fun setLastVisitTime(context: Context, currentTimeMillis: Long) =
         apply()
     }
 
-fun Context.toPluralsString(resId: Int, plural: Long) = "$plural ${this.resources.getQuantityString(resId, plural.toInt())}"
+fun Context.toPlurals(resId: Int, plural: Long): String {
+    val resources = createConfigurationContext(Configuration(this.resources.configuration).apply {
+        setLocale(Locale("ru"))
+    }).resources
+    return resources.getQuantityString(resId, plural.toInt(), plural.toInt())
+}
 
 object TimeConverter {
     fun convertSeconds(seconds: Long, context: Context): String {
@@ -41,11 +48,11 @@ object TimeConverter {
         val inYear = 31_104_000 // 12 months in year
 
         return when {
-            seconds / inYear > 0 -> context.toPluralsString(R.plurals.years, seconds / inYear)
-            seconds / inMonth > 0 -> context.toPluralsString(R.plurals.months, seconds / inMonth)
-            seconds / inDay > 0 -> context.toPluralsString(R.plurals.days, seconds / inDay)
-            seconds / inHour > 0 -> context.toPluralsString(R.plurals.hours, seconds / inHour)
-            seconds / inMinute > 0 -> context.toPluralsString(R.plurals.minutes, seconds / inMinute)
+            seconds / inYear > 0 -> context.toPlurals(R.plurals.years, seconds / inYear)
+            seconds / inMonth > 0 -> context.toPlurals(R.plurals.months, seconds / inMonth)
+            seconds / inDay > 0 -> context.toPlurals(R.plurals.days, seconds / inDay)
+            seconds / inHour > 0 -> context.toPlurals(R.plurals.hours, seconds / inHour)
+            seconds / inMinute > 0 -> context.toPlurals(R.plurals.minutes, seconds / inMinute)
             else -> "менее минуты"
         } + " назад"
     }

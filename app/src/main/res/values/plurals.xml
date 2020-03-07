@@ -1,43 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="years">
-        <item quantity="zero">лет</item>
-        <item quantity="one">год</item>
-        <item quantity="two">года</item>
-        <item quantity="few">года</item>
+        <item quantity="one">%1$d год</item>
+        <item quantity="few">%1$d года</item>
         <item quantity="many">Несколько лет</item>
         <item quantity="other">Несколько лет</item>
     </plurals>
     <plurals name="months">
-        <item quantity="zero">месяцев</item>
-        <item quantity="one">месяц</item>
-        <item quantity="two">месяца</item>
-        <item quantity="few">месяца</item>
-        <item quantity="many">месяцев</item>
-        <item quantity="other">месяцев</item>
+        <item quantity="one">%1$d месяц</item>
+        <item quantity="few">%1$d месяца</item>
+        <item quantity="many">%1$d месяцев</item>
+        <item quantity="other">%1$d месяцев</item>
     </plurals>
     <plurals name="days">
-        <item quantity="zero">дней</item>
-        <item quantity="one">день</item>
-        <item quantity="two">дня</item>
-        <item quantity="few">дня</item>
-        <item quantity="many">дней</item>
-        <item quantity="other">дней</item>
+        <item quantity="one">%1$d день</item>
+        <item quantity="few">%1$d дня</item>
+        <item quantity="many">%1$d дней</item>
+        <item quantity="other">%1$d дней</item>
     </plurals>
     <plurals name="hours">
-        <item quantity="zero">часов</item>
-        <item quantity="one">час</item>
-        <item quantity="two">часа</item>
-        <item quantity="few">часа</item>
-        <item quantity="many">часов</item>
-        <item quantity="other">часов</item>
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+        <item quantity="other">%d часов</item>
     </plurals>
     <plurals name="minutes">
-        <item quantity="zero">минут</item>
-        <item quantity="one">минуту</item>
-        <item quantity="two">минуты</item>
-        <item quantity="few">минуты</item>
-        <item quantity="many">минут</item>
-        <item quantity="other">минут</item>
+        <item quantity="one">%d минуту</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минут</item>
     </plurals>
 </resources>
