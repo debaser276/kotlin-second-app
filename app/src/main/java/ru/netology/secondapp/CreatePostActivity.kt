@@ -62,27 +62,25 @@ class CreatePostActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
-            imageBitmap.let {
-                launch {
-                    val dialog = LoadingDialog(this@CreatePostActivity).apply {
-                        setTitle(R.string.creating_new_post)
-                        show()
+            launch {
+                val dialog = LoadingDialog(this@CreatePostActivity).apply {
+                    setTitle(R.string.creating_new_post)
+                    show()
+                }
+                try {
+                    val imageUploadResult = Repository.uploadImage(imageBitmap)
+                    NotificationHelper.mediaUploaded(MediaType.IMAGE, this@CreatePostActivity)
+                    if (imageUploadResult.isSuccessful) {
+                        attachPhotoImg.setImageResource(R.drawable.ic_add_a_photo_inactive)
+                        attachPhotoDoneImg.visibility = View.VISIBLE
+                        attachmentModel = imageUploadResult.body()
+                    } else {
+                        toast(R.string.cant_upload_image)
                     }
-                    try {
-                        val imageUploadResult = Repository.uploadImage(it)
-                        NotificationHelper.mediaUploaded(MediaType.IMAGE, this@CreatePostActivity)
-                        if (imageUploadResult.isSuccessful) {
-                            attachPhotoImg.setImageResource(R.drawable.ic_add_a_photo_inactive)
-                            attachPhotoDoneImg.visibility = View.VISIBLE
-                            attachmentModel = imageUploadResult.body()
-                        } else {
-                            toast(R.string.cant_upload_image)
-                        }
-                    } catch (e: IOException) {
-                        toast(R.string.error_occured)
-                    } finally {
-                        dialog.dismiss()
-                    }
+                } catch (e: IOException) {
+                    toast(R.string.error_occured)
+                } finally {
+                    dialog.dismiss()
                 }
             }
         }
