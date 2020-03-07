@@ -10,6 +10,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import ru.netology.secondapp.dto.AttachmentModel
 import ru.netology.secondapp.dto.MediaType
@@ -84,5 +85,10 @@ class CreatePostActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
     }
 }
