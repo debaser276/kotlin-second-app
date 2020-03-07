@@ -36,7 +36,7 @@ open class BaseViewHolder(adapter: PostAdapter, view: View) : RecyclerView.ViewH
             authorTv.text = post.author
             val millis = System.currentTimeMillis()
             val seconds = millis / 1000
-            dateTv.text = TimeConverter.convertSeconds(seconds - post.created)
+            dateTv.text = TimeConverter.convertSeconds(seconds - post.created, context)
             contentTv.text = post.content
 
             when {
