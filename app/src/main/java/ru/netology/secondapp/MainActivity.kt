@@ -5,6 +5,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.edit
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -17,6 +22,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        requestToken()
 
         if (isAuthenticated()) {
             val token = getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getString(
@@ -75,6 +82,26 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
             putString(AUTHENTICATED_SHARED_KEY, token)
             putInt(AUTHENTICATED_ID, id)
+        }
+    }
+
+    private fun requestToken() {
+        with(GoogleApiAvailability.getInstance()) {
+            val code = isGooglePlayServicesAvailable(this@MainActivity)
+            if (code == ConnectionResult.SUCCESS) {
+                return@with
+            }
+            if (isUserResolvableError(code)) {
+                getErrorDialog(this@MainActivity, code, 9000).show()
+                return
+            }
+            Snackbar.make(root, "Snack", Snackbar.LENGTH_SHORT)
+            return
+        }
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+            launch {
+                println(it.token)
+            }
         }
     }
 
