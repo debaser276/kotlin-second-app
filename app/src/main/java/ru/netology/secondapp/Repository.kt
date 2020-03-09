@@ -16,8 +16,6 @@ import java.io.ByteArrayOutputStream
 
 object Repository {
 
-    private var token: String? = null
-
     private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -42,20 +40,16 @@ object Repository {
     private var API: API =
         retrofit.create(ru.netology.secondapp.api.API::class.java)
 
-    suspend fun authenticate(login: String, password: String) {
-        return API.authenticate(AuthRequestParams(login, password)).let {
-            if (it.isSuccessful) {
-                token = it.body()?.token
-            }
-        }
-    }
+    suspend fun authenticate(login: String, password: String) =
+        API.authenticate(AuthRequestParams(login, password))
 
     suspend fun register(login: String, password: String) =
         API.register(RegistrationRequestParams(login, password))
 
-    suspend fun createPost(content: String, attachmentModel: AttachmentModel?) = API.createPost(
-        CreatePostRequest(content = content, attachmentId = attachmentModel?.id)
-    )
+    suspend fun createPost(content: String, attachmentModel: AttachmentModel?) =
+        API.createPost(
+            CreatePostRequest(content = content, attachmentId = attachmentModel?.id)
+        )
 
     suspend fun getPosts() = API.getPosts()
 
@@ -69,7 +63,8 @@ object Repository {
 
     suspend fun dislike(id: Int) = API.dislike(id)
 
-    suspend fun repost(id: Int, content: String) = API.repost(id, CreateRepostRequest(content = content))
+    suspend fun repost(id: Int, content: String) =
+        API.repost(id, CreateRepostRequest(content = content))
 
     suspend fun uploadImage(bitmap: Bitmap): Response<AttachmentModel> {
         val bos = ByteArrayOutputStream()
@@ -79,5 +74,6 @@ object Repository {
         return API.uploadImage(body)
     }
 
-    suspend fun registerPushToken(token: String) = API.registerPushToken(this.token!!, PushRequestParams(token))
+    suspend fun registerPushToken(token: String) =
+        API.registerPushToken(PushRequestParams(token))
 }
