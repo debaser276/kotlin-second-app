@@ -12,7 +12,7 @@
     <string name="enter_password">Введите пароль</string>
     <string name="enter_your_post_content">Введите текст поста</string>
     <string name="error_occured">Произошла ошибка</string>
-    <string name="getting_posts">Получение постов</string>
+    <string name="getting_posts">Загрузка постов...</string>
     <string name="like_in_progress">Лайкание</string>
     <string name="load_more_posts">Загрузить еще постов</string>
     <string name="login">Логин</string>
@@ -25,4 +25,5 @@
     <string name="repeat_password">Повторите пароль</string>
     <string name="success">Успешно</string>
     <string name="unauthorized">Не удалось авторизоваться</string>
+    <string name="getting_post">Загрузка поста...</string>
 </resources>

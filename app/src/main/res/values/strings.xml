@@ -26,4 +26,5 @@
     <string name="unauthorized">Unauthorized</string>
     <string name="less_than_minute">Less than minute</string>
     <string name="ago">ago</string>
+    <string name="getting_post">Getting post...</string>
 </resources>
