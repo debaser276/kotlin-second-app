@@ -7,8 +7,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Message
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.google.firebase.messaging.RemoteMessage
 import ru.netology.secondapp.dto.MediaType
 import java.util.*
 
@@ -60,6 +62,29 @@ object NotificationHelper {
         createNotificationChannelIfNotCreated(context)
         val title = "Where are you?"
         val content = "Дорогой пользователь, возвращайтесь к нам скорее"
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createBuilder(context, title, content, NotificationManager.IMPORTANCE_HIGH)
+        } else {
+            createBuilder(context, title, content)
+        }
+        showNotification(context, builder)
+    }
+
+    fun welcomeNotification(context: Context, message: RemoteMessage) {
+        createNotificationChannelIfNotCreated(context)
+        val title = message.data["title"] ?: return
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createBuilder(context, title, "", NotificationManager.IMPORTANCE_HIGH)
+        } else {
+            createBuilder(context, title, "")
+        }
+        showNotification(context, builder)
+    }
+
+    fun likeAddNotification(context: Context, message: RemoteMessage) {
+        createNotificationChannelIfNotCreated(context)
+        val title = message.data["title"] ?: return
+        val content = message.data["content"] ?: return
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createBuilder(context, title, content, NotificationManager.IMPORTANCE_HIGH)
         } else {
