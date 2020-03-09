@@ -60,5 +60,5 @@ interface API {
     suspend fun uploadImage(@Part file: MultipartBody.Part): Response<AttachmentModel>
 
     @POST("api/v1/push")
-    suspend fun registerPushToken(@Header("Authorization") token: String, @Body pushRequestParams: PushRequestParams): Response<Nothing>
+    suspend fun registerPushToken(@Body pushRequestParams: PushRequestParams): Response<Void>
 }
