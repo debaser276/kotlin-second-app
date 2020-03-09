@@ -72,6 +72,7 @@ object NotificationHelper {
             MAIN_ACTIVITY_REQUEST,
             Intent(context, MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT))
+            .setAutoCancel(true)
         showNotification(context, builder)
     }
 
@@ -100,6 +101,7 @@ object NotificationHelper {
             POST_ACTIVITY_REQUEST,
             Intent(context, PostActivity::class.java).apply { putExtra(INTENT_POST_ID, recipientPostId) },
             PendingIntent.FLAG_UPDATE_CURRENT))
+            .setAutoCancel(true)
         showNotification(context, builder)
     }
 

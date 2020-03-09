@@ -28,7 +28,6 @@ class PostActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
         setContentView(R.layout.post_item_view)
 
         val postId = intent.getIntExtra(INTENT_POST_ID, 0)
-
         launch {
             try {
                 val response = Repository.getById(postId)
@@ -81,7 +80,6 @@ class PostActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
 
         when (post.attachment?.mediaType) {
             MediaType.IMAGE -> loadImage(photoImage, post.attachment!!.url)
-            else -> {}
         }
     }
 
