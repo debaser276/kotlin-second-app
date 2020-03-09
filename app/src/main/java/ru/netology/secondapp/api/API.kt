@@ -17,6 +17,8 @@ data class CreatePostRequest(val content: String, val type: PostType = PostType.
 
 data class CreateRepostRequest(val content: String, val type: PostType = PostType.REPOST)
 
+data class PushRequestParams(val token: String)
+
 interface API {
 
     @POST("api/v1/authentication")
@@ -56,4 +58,7 @@ interface API {
     @Multipart
     @POST("api/v1/media")
     suspend fun uploadImage(@Part file: MultipartBody.Part): Response<AttachmentModel>
+
+    @POST("api/v1/push")
+    suspend fun registerPushToken(@Header("Authorization") token: String, @Body pushRequestParams: PushRequestParams): Response<Nothing>
 }

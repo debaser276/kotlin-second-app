@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream
 
 object Repository {
 
+    private var token: String? = null
+
     private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -40,8 +42,13 @@ object Repository {
     private var API: API =
         retrofit.create(ru.netology.secondapp.api.API::class.java)
 
-    suspend fun authenticate(login: String, password: String) =
-        API.authenticate(AuthRequestParams(login, password))
+    suspend fun authenticate(login: String, password: String) {
+        return API.authenticate(AuthRequestParams(login, password)).let {
+            if (it.isSuccessful) {
+                token = it.body()?.token
+            }
+        }
+    }
 
     suspend fun register(login: String, password: String) =
         API.register(RegistrationRequestParams(login, password))
@@ -71,4 +78,6 @@ object Repository {
         val body = MultipartBody.Part.createFormData("file", "image.jpg", reqFile)
         return API.uploadImage(body)
     }
+
+    suspend fun registerPushToken(token: String) = API.registerPushToken(this.token!!, PushRequestParams(token))
 }
