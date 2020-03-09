@@ -11,8 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.activity_feed.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_load_more.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -35,6 +40,8 @@ class FeedActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         scheduleJob()
         setContentView(R.layout.activity_feed)
+
+        requestToken()
 
         fab.setOnClickListener {
             startActivity(Intent(this, CreatePostActivity::class.java))
@@ -167,6 +174,26 @@ class FeedActivity : AppCompatActivity(),
                     progressbarMore.visibility = View.GONE
                     loadMoreBtn.isEnabled = true
                 }
+            }
+        }
+    }
+
+    private fun requestToken() {
+        with(GoogleApiAvailability.getInstance()) {
+            val code = isGooglePlayServicesAvailable(this@FeedActivity)
+            if (code == ConnectionResult.SUCCESS) {
+                return@with
+            }
+            if (isUserResolvableError(code)) {
+                getErrorDialog(this@FeedActivity, code, 9000).show()
+                return
+            }
+            Snackbar.make(root, "Snack", Snackbar.LENGTH_SHORT)
+            return
+        }
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+            launch {
+                Repository.registerPushToken(it.token)
             }
         }
     }

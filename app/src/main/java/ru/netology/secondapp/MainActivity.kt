@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        requestToken()
-
         if (isAuthenticated()) {
             val token = getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getString(
                 AUTHENTICATED_SHARED_KEY, "")
@@ -82,26 +80,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).edit {
             putString(AUTHENTICATED_SHARED_KEY, token)
             putInt(AUTHENTICATED_ID, id)
-        }
-    }
-
-    private fun requestToken() {
-        with(GoogleApiAvailability.getInstance()) {
-            val code = isGooglePlayServicesAvailable(this@MainActivity)
-            if (code == ConnectionResult.SUCCESS) {
-                return@with
-            }
-            if (isUserResolvableError(code)) {
-                getErrorDialog(this@MainActivity, code, 9000).show()
-                return
-            }
-            Snackbar.make(root, "Snack", Snackbar.LENGTH_SHORT)
-            return
-        }
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-            launch {
-                println(it.token)
-            }
         }
     }
 
