@@ -29,6 +29,10 @@ class PostActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
 
         val postId = intent.getIntExtra(INTENT_POST_ID, 0)
         launch {
+            val dialog = LoadingDialog(this@PostActivity).apply {
+                setTitle(R.string.getting_post)
+                show()
+            }
             try {
                 val response = Repository.getById(postId)
                 if (response.isSuccessful) {
@@ -37,6 +41,8 @@ class PostActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
                 }
             } catch (e : IOException) {
                 toast(R.string.error_occured)
+            } finally {
+                dialog.dismiss()
             }
         }
     }
