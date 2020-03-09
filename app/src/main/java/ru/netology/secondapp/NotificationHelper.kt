@@ -7,7 +7,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.Message
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.RemoteMessage
@@ -18,6 +17,8 @@ object NotificationHelper {
 
     private const val UPLOAD_CHANNEL_ID = "upload_channel_id"
     private const val MAIN_ACTIVITY_REQUEST = 1
+    private const val POST_ACTIVITY_REQUEST = 2
+    private const val INTENT_POST_ID = "intent-post-id"
     private var channelCreated = false
     private var lastNotificationId: Int? = null
 
@@ -66,7 +67,11 @@ object NotificationHelper {
             createBuilder(context, title, content, NotificationManager.IMPORTANCE_HIGH)
         } else {
             createBuilder(context, title, content)
-        }
+        }.setContentIntent(PendingIntent.getActivity(
+            context,
+            MAIN_ACTIVITY_REQUEST,
+            Intent(context, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT))
         showNotification(context, builder)
     }
 
@@ -85,11 +90,16 @@ object NotificationHelper {
         createNotificationChannelIfNotCreated(context)
         val title = message.data["title"] ?: return
         val content = message.data["content"] ?: return
+        val recipientPostId = message.data["recipientPostId"]?.toInt()
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createBuilder(context, title, content, NotificationManager.IMPORTANCE_HIGH)
         } else {
             createBuilder(context, title, content)
-        }
+        }.setContentIntent(PendingIntent.getActivity(
+            context,
+            POST_ACTIVITY_REQUEST,
+            Intent(context, PostActivity::class.java).apply { putExtra(INTENT_POST_ID, recipientPostId) },
+            PendingIntent.FLAG_UPDATE_CURRENT))
         showNotification(context, builder)
     }
 
@@ -126,12 +136,6 @@ object NotificationHelper {
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    MAIN_ACTIVITY_REQUEST,
-                    Intent(context, MainActivity::class.java),
-                    PendingIntent.FLAG_UPDATE_CURRENT))
         return builder
     }
 

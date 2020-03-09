@@ -31,6 +31,9 @@ interface API {
     suspend fun createPost(
         @Body createPostRequest: CreatePostRequest): Response<Void>
 
+    @GET("/api/v1/posts/{id}")
+    suspend fun getById(@Path("id") id: Int): Response<PostModel>
+
     @GET("api/v1/posts")
     suspend fun getPosts(): Response<MutableList<PostModel>>
 

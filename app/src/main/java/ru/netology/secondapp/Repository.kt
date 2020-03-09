@@ -53,6 +53,8 @@ object Repository {
 
     suspend fun getPosts() = API.getPosts()
 
+    suspend fun getById(id: Int) = API.getById(id)
+
     suspend fun getRecentPosts() = API.getRecentPosts()
 
     suspend fun getPostsBefore(id: Int) = API.getPostsBefore(id)

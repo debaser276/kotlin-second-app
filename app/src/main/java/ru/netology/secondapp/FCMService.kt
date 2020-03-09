@@ -1,6 +1,5 @@
 package ru.netology.secondapp
 
-import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
