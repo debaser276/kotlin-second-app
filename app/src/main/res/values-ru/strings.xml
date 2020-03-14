@@ -26,4 +26,5 @@
     <string name="success">Успешно</string>
     <string name="unauthorized">Не удалось авторизоваться</string>
     <string name="getting_post">Загрузка поста...</string>
+    <string name="google_play_unavailable">Сервисы Google play нелоступны</string>
 </resources>

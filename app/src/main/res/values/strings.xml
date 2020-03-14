@@ -27,4 +27,5 @@
     <string name="less_than_minute">Less than minute</string>
     <string name="ago">ago</string>
     <string name="getting_post">Getting post...</string>
+    <string name="google_play_unavailable">Google Play Services are unavailable</string>
 </resources>

@@ -188,7 +188,7 @@ class FeedActivity : AppCompatActivity(),
                 getErrorDialog(this@FeedActivity, code, 9000).show()
                 return
             }
-            Snackbar.make(root, "Snack", Snackbar.LENGTH_SHORT)
+            Snackbar.make(root, R.string.google_play_unavailable, Snackbar.LENGTH_SHORT).show()
             return
         }
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
