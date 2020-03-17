@@ -27,4 +27,5 @@
     <string name="unauthorized">Не удалось авторизоваться</string>
     <string name="getting_post">Загрузка поста...</string>
     <string name="google_play_unavailable">Сервисы Google play нелоступны</string>
+    <string name="no_post">Не создано ни одного поста</string>
 </resources>

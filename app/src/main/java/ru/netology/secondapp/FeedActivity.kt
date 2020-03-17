@@ -1,5 +1,6 @@
 package ru.netology.secondapp
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import ru.netology.secondapp.adapter.PostAdapter
 import ru.netology.secondapp.dto.PostModel
 import java.io.IOException
@@ -35,6 +37,10 @@ class FeedActivity : AppCompatActivity(),
     PostAdapter.OnMorePostsBtnClickListener {
 
     private lateinit var postAdapter: PostAdapter
+
+    companion object {
+        private const val PLAY_SERVICES_RESOLUTION_REQUEST = 9000
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +85,7 @@ class FeedActivity : AppCompatActivity(),
                     }
                     startActivity(Intent(this@FeedActivity, MainActivity::class.java))
                 } else {
+
                     toast(R.string.error_occured)
                 }
             } catch(e: IOException) {
@@ -135,7 +142,6 @@ class FeedActivity : AppCompatActivity(),
         launch {
             try {
                 val response = Repository.getPostsAfter(postAdapter.list[0].id)
-                swipeContainer.isRefreshing = false
                 if (response.isSuccessful) {
                     val newItems = response.body()!!
                     postAdapter.list.addAll(0, newItems)
@@ -145,6 +151,10 @@ class FeedActivity : AppCompatActivity(),
                 }
             } catch (e: IOException) {
                 toast(R.string.error_occured)
+            } catch (e: IndexOutOfBoundsException) {
+                toast(R.string.no_post)
+            } finally {
+                swipeContainer.isRefreshing = false
             }
         }
     }
@@ -182,19 +192,26 @@ class FeedActivity : AppCompatActivity(),
         with(GoogleApiAvailability.getInstance()) {
             val code = isGooglePlayServicesAvailable(this@FeedActivity)
             if (code == ConnectionResult.SUCCESS) {
-                return@with
+                onActivityResult(PLAY_SERVICES_RESOLUTION_REQUEST, Activity.RESULT_OK, null)
+            } else if (isUserResolvableError(code)) {
+                getErrorDialog(this@FeedActivity, code, PLAY_SERVICES_RESOLUTION_REQUEST).show()
+            } else {
+                Snackbar.make(root, R.string.google_play_unavailable, Snackbar.LENGTH_SHORT).show()
             }
-            if (isUserResolvableError(code)) {
-                getErrorDialog(this@FeedActivity, code, 9000).show()
-                return
-            }
-            Snackbar.make(root, R.string.google_play_unavailable, Snackbar.LENGTH_SHORT).show()
-            return
         }
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-            launch {
-                Repository.registerPushToken(it.token)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            PLAY_SERVICES_RESOLUTION_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    launch {
+                        val token = FirebaseInstanceId.getInstance().instanceId.await().token
+                        Repository.registerPushToken(token)
+                    }
+                }
             }
+            else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
 

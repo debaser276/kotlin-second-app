@@ -28,4 +28,5 @@
     <string name="ago">ago</string>
     <string name="getting_post">Getting post...</string>
     <string name="google_play_unavailable">Google Play Services are unavailable</string>
+    <string name="no_post">There are no posts yet</string>
 </resources>

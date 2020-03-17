@@ -9,7 +9,7 @@ enum class MediaType {
 
 data class AttachmentModel(val id: String, val mediaType: MediaType) {
     val url
-        get() = "$BASE_URL/api/v1/static/$id"
+        get() = "${BASE_URL}api/v1/static/$id"
 }
 
 enum class PostType {
