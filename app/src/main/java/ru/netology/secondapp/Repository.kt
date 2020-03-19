@@ -13,6 +13,7 @@ import ru.netology.secondapp.api.*
 import ru.netology.secondapp.api.interceptor.InjectAuthTokenInterceptor
 import ru.netology.secondapp.dto.AttachmentModel
 import java.io.ByteArrayOutputStream
+import java.util.concurrent.TimeUnit
 
 object Repository {
 
@@ -26,6 +27,7 @@ object Repository {
         val httpLoggerInterceptor = HttpLoggingInterceptor()
         httpLoggerInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(InjectAuthTokenInterceptor(authToken))
             .addInterceptor(httpLoggerInterceptor)
             .build()
